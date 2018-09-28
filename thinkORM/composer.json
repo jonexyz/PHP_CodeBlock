@@ -1,0 +1,10 @@
+{
+    "require": {
+        "topthink/think-orm": "^1.2"
+    },
+    "autoload": {
+        "files":[
+            "./model/BaseModel.php"
+        ]
+    }
+}
