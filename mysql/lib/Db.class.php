@@ -24,13 +24,22 @@ class Db
 
     private $table_nmae;  // 表名
 
-    public $data;   // sql语句执行结果
+    public $data;   // 存储lastSql执行执行的结果
+
+    private $debug;   // debug模式：开启调试模式,则直接打印错误信息。关闭调试模式,则错误信息通过错误日志输出。
+
+    private $err; //错误日志操作类
 
     private function __construct()
     {
-        $dsn = 'mysql:dbname=test;host=127.0.0.1';
-        $user = 'root';
-        $password = 'root';
+        include  __DIR__.'/config.php';
+
+        $dsn = 'mysql:dbname='.DBNAME.';host='.HOST;
+        $user = USER;
+        $password = PASSWORD;
+        $this->debug = DEBUG;
+        $this->err = ERR;
+
 
         try {
             $this->db = new PDO($dsn, $user, $password);
@@ -54,10 +63,7 @@ class Db
 
 
 
-    private function debug()
-    {
-        exit;
-    }
+
 
 
     /**
@@ -148,7 +154,29 @@ class Db
      */
     private function execute()
     {
-        $this->data = $this->db->exec($this->lastSql);
+
+        try{
+            $this->data = $this->db->exec($this->lastSql);
+
+            if ($this->data === false && $this->debug){
+                $errMS = $this->db->errorInfo();
+                exit( '错误码：'.$errMS[0].'<br/>'.'错误编号：'.$errMS[1].'<br/>'.'错误信息：'.$errMS[2].'<br/>' );
+
+            }elseif( $this->data === false &&  !$this->debug ){
+                $errMS = $this->db->errorInfo();
+                $str = '错误码：'.$errMS[0].'<br/>'.'错误编号：'.$errMS[1].'<br/>'.'错误信息：'.$errMS[2].'<br/>' ;
+                (new $this->err)->test($str);
+            }
+
+        }catch (PDOException $e){
+
+            if($this->debug){
+                exit('Connection failed: ' . $e->getMessage());
+                // 直接打印错误信息,并终止程序执行
+            }else{
+                // 将错误信息存储到错误日志,并终止执行
+            }
+        }
     }
 
 }

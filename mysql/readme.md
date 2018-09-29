@@ -1,1 +1,1 @@
-mysql_pdo塬上php封装使用类
+mysql_pdo类封装练习
