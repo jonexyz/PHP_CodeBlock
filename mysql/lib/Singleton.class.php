@@ -1,12 +1,12 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: 12
- * Date: 2018/9/29
- * Time: 20:00
+ * User: JONE
+ * DateTime: 2018/9/29 22:27
+ * Email: abc@jone.xyz
+ * Description: 单例模式
  */
 
-// 生产单例
 class Singleton
 {
     private static $obj;
@@ -25,7 +25,6 @@ class Singleton
             self::$obj = new self();
         }
 
-        //var_dump(self::$obj);
         return self::$obj;
     }
 

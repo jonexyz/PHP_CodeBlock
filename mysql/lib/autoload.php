@@ -4,10 +4,9 @@
  * User: JONE
  * DateTime: 2018/9/29 22:21
  * Email: abc@jone.xyz
- * Description: 内容描述
+ * Description: 类文件自动加载
  */
 
-// 自动加载
 spl_autoload_register(function ($name) {
     require_once './lib/'.$name.'.class.php';
 });

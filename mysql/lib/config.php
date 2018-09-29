@@ -4,7 +4,7 @@
  * User: JONE
  * DateTime: 2018/9/29 22:27
  * Email: abc@jone.xyz
- * Description: 内容描述
+ * Description: DB类操作的配置文件
  */
 
 // 'mysql:dbname=test;host=127.0.0.1';

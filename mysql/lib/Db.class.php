@@ -1,17 +1,12 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Administrator
- * Date: 2018-09-29
- * Time: 14:19
+ * User: JONE
+ * DateTime: 2018/9/29 22:27
+ * Email: abc@jone.xyz
+ * Description: 简单封装PDO数据库操作，三私一公的单例模式，参照了https://www.jb51.net/article/84202.htm
  */
 
-
-/**
- * 简单封装PDO数据库操作
- * 三私一公的单例模式
- * @license https://www.jb51.net/article/84202.htm
- */
 class Db
 {
     private static $obj;
