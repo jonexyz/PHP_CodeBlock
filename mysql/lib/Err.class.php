@@ -9,9 +9,24 @@
 
 class Err
 {
-    public function test($info)
+    /**
+     * 正常模式错误处理
+     * @param $info
+     *
+     */
+    public function regular($info)
     {
-        echo $info,' <br><hr>';
+       exit('数据库错误,请稍后再试');
+    }
+
+    /**
+     * debug模式错误处理
+     * @param $info
+     */
+    public function debug($info)
+    {
+        echo $info;
+        echo '<hr>';
     }
 
 }

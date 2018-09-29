@@ -153,15 +153,18 @@ class Db
         try{
             $this->data = $this->db->exec($this->lastSql);
 
-            if ($this->data === false && $this->debug){
-                $errMS = $this->db->errorInfo();
-                exit( '错误码：'.$errMS[0].'<br/>'.'错误编号：'.$errMS[1].'<br/>'.'错误信息：'.$errMS[2].'<br/>' );
 
-            }elseif( $this->data === false &&  !$this->debug ){
+            if($this->data === false ){
                 $errMS = $this->db->errorInfo();
-                $str = '错误码：'.$errMS[0].'<br/>'.'错误编号：'.$errMS[1].'<br/>'.'错误信息：'.$errMS[2].'<br/>' ;
-                (new $this->err)->test($str);
+                $str =  '错误码：'.$errMS[0].'<br/>'.'错误编号：'.$errMS[1].'<br/>'.'错误信息：'.$errMS[2].'<br/>' ;
+
+                if($this->debug){
+                    (new $this->err)->debug($str);
+                }else{
+                    (new $this->err)->regular($str);
+                }
             }
+
 
         }catch (PDOException $e){
 
