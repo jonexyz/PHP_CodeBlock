@@ -21,6 +21,8 @@ class Db
 
     public $data;   // 存储lastSql执行执行的结果
 
+    public $warning;  // 警告信息
+
     private $debug;   // debug模式：开启调试模式,则直接打印错误信息。关闭调试模式,则错误信息通过错误日志输出。
 
     private $err; //错误日志操作类
@@ -92,11 +94,26 @@ class Db
 
     /**
      * 插入操作
-     * @param $data
+     * @param array $data  可以是一维数组也可以是二维数组，但必须是关联数组，数组的键是数据表字段名，数组的值是数据表字段对应的值
      */
-    public function insert($data)
+    public function insert(array $data)
     {
-        $this->lastSql = "";
+        if($this->arrayConut($data)){ //当是一维数组时
+
+            $this->lastSql = "INSERT INTO `$this->table_nmae` (`".implode('`,`', array_keys($data))."`) VALUES ('".implode("','", $data)."')";
+
+        }else{  // 当是二维数组时
+
+            // TODO
+            $this->debug('参数错误,不能为二维数组');
+
+        }
+
+
+        if($this->where){
+            $this->warning['where'] = '插入数据,where条件无效';
+        }
+
 
         $this->execute();
 
@@ -105,10 +122,21 @@ class Db
     }
 
     /**
-     * 更新操作
+     * @param array $data 必须是一维关联数组
+     * @return $this
      */
-    public function update($data)
+    public function update(array $data)
     {
+        if($this->arrayConut($data)){ //当是一维数组时
+
+            $this->lastSql = "INSERT INTO `$this->table_nmae` (`".implode('`,`', array_keys($data))."`) VALUES ('".implode("','", $data)."')";
+
+        }else{  // 当是二维数组时
+
+            // TODO
+            exit('多维数组数据插入未完善');
+        }
+
         $this->lastSql = "";
 
         $this->execute();
@@ -158,11 +186,7 @@ class Db
                 $errMS = $this->db->errorInfo();
                 $str =  '错误码：'.$errMS[0].'<br/>'.'错误编号：'.$errMS[1].'<br/>'.'错误信息：'.$errMS[2].'<br/>' ;
 
-                if($this->debug){
-                    (new $this->err)->debug($str);
-                }else{
-                    (new $this->err)->regular($str);
-                }
+                $this->debug($str);
             }
 
 
@@ -174,6 +198,34 @@ class Db
             }else{
                 // 将错误信息存储到错误日志,并终止执行
             }
+        }
+    }
+
+    /**
+     * 判断是是不是二维数组
+     * @param array $arr
+     */
+    private function arrayConut(array $arr)
+    {
+        if (count($arr) == count($arr, 1)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 错误信息打印
+     * @param $str
+     */
+    private function debug($str)
+    {
+        if($this->debug){
+            ini_set('display_errors', 1);
+            (new $this->err)->debug($str);
+        }else{
+            ini_set('display_errors', 0);
+            (new $this->err)->regular($str);
         }
     }
 

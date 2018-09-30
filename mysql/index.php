@@ -9,10 +9,11 @@
 
 
 
+
 require_once './lib/autoload.php';
 
 $mysql = Db::init();
 
-$res = $mysql->tableName('a1')->where(1)->delete();
+$res = $mysql->tableName('a')->insert([['id'=>5,'char'=>'aaa']]);
 echo '<pre>';
-var_dump($res);
+//var_dump($res);

@@ -29,3 +29,10 @@ class Singleton
     }
 
 }
+
+
+var_dump(Singleton::create());
+
+echo '<hr>';
+
+var_dump(Singleton::create());
