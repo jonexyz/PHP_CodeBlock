@@ -146,10 +146,20 @@ class Db
 
     /**
      * 查询操作
+     * @param string $where  查询条件
      */
-    public function query()
+    public function query($where = '')
     {
-        $this->lastSql = "";
+
+
+        if(empty($where)){
+
+            $this->lastSql = "SELECT * FROM `$this->table_nmae` ";
+
+        }else{
+
+            $this->lastSql = "SELECT * FROM `$this->table_nmae`  WHERE $where ";
+        }
 
         $this->execute();
 
